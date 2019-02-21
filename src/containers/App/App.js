@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import "./App.css";
 
-import CardList from "./components/CardList/CardList";
-import SearchBox from "./components/SearchBox/SearchBox";
-import Scroll from "./components/Scroll/Scroll";
+import CardList from "../../components/CardList/CardList";
+import SearchBox from "../../components/SearchBox/SearchBox";
+import Scroll from "../../components/Scroll/Scroll";
 // import { robots } from "./robots";
 
 class App extends Component {
@@ -34,20 +34,17 @@ class App extends Component {
       return robot.name.toLowerCase().includes(searchfield.toLowerCase());
     });
 
-    // robots.length === 0
-    if (!robots.length) {
-      return <h1>Loading...</h1>;
-    } else {
-      return (
-        <div className="App tc">
-          <h1 className="f1">Robofriends</h1>
-          <SearchBox searchChange={this.onSearchChange} />
-          <Scroll>
-            <CardList robots={filteredRobots} />
-          </Scroll>
-        </div>
-      );
-    }
+    return !robots.length ? (
+      <h1>Loading...</h1>
+    ) : (
+      <div className="App tc">
+        <h1 className="f1">Robofriends</h1>
+        <SearchBox searchChange={this.onSearchChange} />
+        <Scroll>
+          <CardList robots={filteredRobots} />
+        </Scroll>
+      </div>
+    );
   }
 }
 
