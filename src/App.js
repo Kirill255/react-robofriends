@@ -9,25 +9,25 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      robots: robots
+      robots: robots,
+      searchfield: ""
     };
   }
 
   onSearchChange = (event) => {
-    // console.log(event.target.value);
-    const searchfield = event.target.value;
-    const filteredRobots = this.state.robots.filter((robot) => {
-      return robot.name.toLowerCase().includes(searchfield.toLowerCase());
-    });
-    console.log(filteredRobots);
+    this.setState({ searchfield: event.target.value });
   };
 
   render() {
+    const filteredRobots = this.state.robots.filter((robot) => {
+      return robot.name.toLowerCase().includes(this.state.searchfield.toLowerCase());
+    });
+
     return (
       <div className="App tc">
         <h1>Robofriends</h1>
         <SearchBox searchChange={this.onSearchChange} />
-        <CardList robots={this.state.robots} />
+        <CardList robots={filteredRobots} />
       </div>
     );
   }
