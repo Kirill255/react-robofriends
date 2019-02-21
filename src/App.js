@@ -11,17 +11,16 @@ class App extends Component {
     this.state = {
       robots: robots
     };
-    this.onSearchChange = this.onSearchChange.bind(this);
   }
 
-  onSearchChange(event) {
+  onSearchChange = (event) => {
     // console.log(event.target.value);
     const searchfield = event.target.value;
     const filteredRobots = this.state.robots.filter((robot) => {
       return robot.name.toLowerCase().includes(searchfield.toLowerCase());
     });
     console.log(filteredRobots);
-  }
+  };
 
   render() {
     return (
