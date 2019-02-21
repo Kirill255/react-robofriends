@@ -1,14 +1,11 @@
-// eslint-disable-next-line
 import React from "react";
 
-const Scroll = (props) => {
-  console.log(props); // у пропсов есть свойство children, которое содержит дочерние элементы, что-то вроде слотов во vue
-  /*
-  <Scroll>
-    <CardList robots={filteredRobots} />
-  </Scroll>
-  */
-  return props.children;
+const Scroll = ({ children }) => {
+  return (
+    <div style={{ overflowY: "scroll", border: "5px solid black", height: "800px" }}>
+      {children}
+    </div>
+  );
 };
 
 export default Scroll;
