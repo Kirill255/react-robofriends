@@ -3,7 +3,7 @@ import "./App.css";
 
 import CardList from "./components/CardList/CardList";
 import SearchBox from "./components/SearchBox/SearchBox";
-import { robots } from "./robots";
+// import { robots } from "./robots";
 
 class App extends Component {
   constructor() {
@@ -15,7 +15,11 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.setState({ robots }); // this.setState({ robots: robots });
+    const url = "http://jsonplaceholder.typicode.com/users";
+    fetch(url)
+      .then((response) => response.json())
+      .then((users) => this.setState({ robots: users }))
+      .catch((err) => console.log(err));
   }
 
   onSearchChange = (event) => {
@@ -29,13 +33,18 @@ class App extends Component {
       return robot.name.toLowerCase().includes(searchfield.toLowerCase());
     });
 
-    return (
-      <div className="App tc">
-        <h1 className="f1">Robofriends</h1>
-        <SearchBox searchChange={this.onSearchChange} />
-        <CardList robots={filteredRobots} />
-      </div>
-    );
+    // robots.length === 0
+    if (!robots.length) {
+      return <h1>Loading...</h1>;
+    } else {
+      return (
+        <div className="App tc">
+          <h1 className="f1">Robofriends</h1>
+          <SearchBox searchChange={this.onSearchChange} />
+          <CardList robots={filteredRobots} />
+        </div>
+      );
+    }
   }
 }
 
