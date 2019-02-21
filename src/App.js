@@ -9,7 +9,7 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      robots: robots,
+      robots,
       searchfield: ""
     };
   }
@@ -19,8 +19,10 @@ class App extends Component {
   };
 
   render() {
-    const filteredRobots = this.state.robots.filter((robot) => {
-      return robot.name.toLowerCase().includes(this.state.searchfield.toLowerCase());
+    const { robots, searchfield } = this.state;
+
+    const filteredRobots = robots.filter((robot) => {
+      return robot.name.toLowerCase().includes(searchfield.toLowerCase());
     });
 
     return (
