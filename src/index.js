@@ -1,7 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { createStore } from "redux";
+import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
+import { createLogger } from "redux-logger";
 import "tachyons";
 
 import App from "./containers/App/App";
@@ -9,8 +10,10 @@ import * as serviceWorker from "./serviceWorker";
 import "./index.css";
 import { searchRobots } from "./reducers";
 
+const logger = createLogger();
+
 // создали store и передали в него reducer
-const store = createStore(searchRobots);
+const store = createStore(searchRobots, applyMiddleware(logger));
 
 // с помощью компонента Provider обернули всё наше приложение и передали ему store как props, Provider это компонент-обёртка, который позволяет не передавать store в каждый компонент по отдельности, а передать store только в Provider, после чего store будет доступен в каждом компоненте в дереве
 ReactDOM.render(
