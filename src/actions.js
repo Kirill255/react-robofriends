@@ -1,3 +1,5 @@
+import { apiCall } from "./api/api";
+
 import {
   CHANGE_SEARCHFIELD,
   REQUEST_ROBOTS_PENDING,
@@ -8,12 +10,12 @@ import {
 // возвращает объект с полями type и payload
 export const setSearchField = (text) => ({ type: CHANGE_SEARCHFIELD, payload: text });
 
+// возвращает функцию
 export const requestRobots = () => (dispatch) => {
   dispatch({ type: REQUEST_ROBOTS_PENDING });
 
   const url = "http://jsonplaceholder.typicode.com/users";
-  fetch(url)
-    .then((response) => response.json())
+  apiCall(url)
     .then((users) => dispatch({ type: REQUEST_ROBOTS_SUCCESS, payload: users }))
     .catch((err) => dispatch({ type: REQUEST_ROBOTS_FAILED, payload: err }));
 };

@@ -13,9 +13,6 @@ import ErrorBoundary from "../../components/ErrorBoundary/ErrorBoundary";
 // parameter state comes from index.js provider store state(rootReducers)
 const mapStateToProps = (state) => {
   return {
-    // searchField: state.searchField // вообще должно быть так searchField: state.searchRobots.searchField, но сейчас у нас только один reducer в сторе, const store = createStore(searchRobots);
-
-    // теперь у нас несколько редьюсеров
     searchField: state.searchRobots.searchField,
     isPending: state.requestRobots.isPending,
     robots: state.requestRobots.robots,
@@ -45,16 +42,18 @@ class App extends Component {
       return robot.name.toLowerCase().includes(searchField.toLowerCase());
     });
 
-    return isPending ? (
-      <h1>Loading...</h1>
-    ) : (
-      <div className="App tc">
-        <h1 className="f1">Robofriends</h1>
+    return (
+      <div className="tc">
+        <h1 className="f1">RoboFriends</h1>
         <SearchBox searchChange={onSearchChange} />
         <Scroll>
-          <ErrorBoundary>
-            <CardList robots={filteredRobots} />
-          </ErrorBoundary>
+          {isPending ? (
+            <h1>Loading</h1>
+          ) : (
+            <ErrorBoundary>
+              <CardList robots={filteredRobots} />
+            </ErrorBoundary>
+          )}
         </Scroll>
       </div>
     );

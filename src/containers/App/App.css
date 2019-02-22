@@ -8,7 +8,7 @@
   src: local("SEGA LOGO FONT"), url("SEGA.woff") format("woff");
 }
 
-.App h1 {
+h1 {
   font-family: "SEGA LOGO FONT";
   font-weight: 200;
   color: #0ccac4;

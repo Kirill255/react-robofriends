@@ -13,8 +13,8 @@ const initialStateSearch = {
 export const searchRobots = (state = initialStateSearch, action = {}) => {
   switch (action.type) {
     case CHANGE_SEARCHFIELD:
-      return Object.assign({}, state, { searchField: action.payload });
-    // return { ...state,  searchField: action.payload }; // тоже самое, и меньше кода
+      // return Object.assign({}, state, { searchField: action.payload });
+      return { ...state, searchField: action.payload }; // тоже самое, и меньше кода
     default:
       return state;
   }
@@ -29,11 +29,11 @@ const initialStateRobots = {
 export const requestRobots = (state = initialStateRobots, action = {}) => {
   switch (action.type) {
     case REQUEST_ROBOTS_PENDING:
-      return Object.assign({}, state, { isPending: true });
+      return { ...state, isPending: true };
     case REQUEST_ROBOTS_SUCCESS:
-      return Object.assign({}, state, { robots: action.payload, isPending: false });
+      return { ...state, isPending: false, robots: action.payload };
     case REQUEST_ROBOTS_FAILED:
-      return Object.assign({}, state, { error: action.payload, isPending: false });
+      return { ...state, isPending: false, error: action.payload };
     default:
       return state;
   }
