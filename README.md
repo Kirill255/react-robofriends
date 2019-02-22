@@ -161,3 +161,49 @@ export default connect(
 ```js
 const { searchField, onSearchChange } = this.props;
 ```
+
+## Redux-thunk
+
+Подключаем в index.js и передаём в store как middleware первой в очереди:
+
+```js
+import thunkMiddleware from "redux-thunk";
+
+// порядок middlewares важен, т.к. они выполняются в порядке объявления
+const store = createStore(rootReducer, applyMiddleware(thunkMiddleware, logger));
+```
+
+Всё! Redux-thunk подключены и теперь когда redux слушает actions, если он видит что action возвращает не просто объект `export const setSearchField = () => ({});`, а возвращает функцию `export const requestRobots = () => () => {}`, то redux передаёт управление в redux-thunk, дальше когда redux-thunk видит что action возвращает функцию, он сам передаёт в неё аргумент dispatch, который мы потом вызовем в нужный момент `export const requestRobots = () => (dispatch) => {}`
+
+```js
+export const requestRobots = () => (dispatch) => {
+  dispatch({ type: REQUEST_ROBOTS_PENDING });
+
+  const url = "http://jsonplaceholder.typicode.com/users";
+  fetch(url)
+    .then((response) => response.json())
+    .then((users) => dispatch({ type: REQUEST_ROBOTS_SUCCESS, payload: users }))
+    .catch((err) => dispatch({ type: REQUEST_ROBOTS_FAILED, payload: err }));
+};
+```
+
+дальше в компоненте создаём обработчик:
+
+```js
+import { requestRobots } from "../../actions";
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    //...
+    onRequestRobots: () => dispatch(requestRobots())
+  };
+};
+```
+
+а в нужный нам момент вызываем:
+
+```js
+componentDidMount() {
+  this.props.onRequestRobots();
+}
+```

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { setSearchField } from "../../actions";
+import { setSearchField, requestRobots } from "../../actions";
 
 import "./App.css";
 
@@ -13,7 +13,13 @@ import ErrorBoundary from "../../components/ErrorBoundary/ErrorBoundary";
 // parameter state comes from index.js provider store state(rootReducers)
 const mapStateToProps = (state) => {
   return {
-    searchField: state.searchField // вообще должно быть так searchField: state.searchRobots.searchField, но сейчас у нас только один reducer в сторе, const store = createStore(searchRobots);
+    // searchField: state.searchField // вообще должно быть так searchField: state.searchRobots.searchField, но сейчас у нас только один reducer в сторе, const store = createStore(searchRobots);
+
+    // теперь у нас несколько редьюсеров
+    searchField: state.searchRobots.searchField,
+    isPending: state.requestRobots.isPending,
+    robots: state.requestRobots.robots,
+    error: state.requestRobots.error
   };
 };
 
@@ -21,36 +27,25 @@ const mapStateToProps = (state) => {
 // the function returns an object then uses connect to change the data from redecers.
 const mapDispatchToProps = (dispatch) => {
   return {
-    onSearchChange: (event) => dispatch(setSearchField(event.target.value))
+    onSearchChange: (event) => dispatch(setSearchField(event.target.value)),
+    onRequestRobots: () => dispatch(requestRobots())
   };
 };
 
 class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      robots: []
-    };
-  }
-
   componentDidMount() {
-    const url = "http://jsonplaceholder.typicode.com/users";
-    fetch(url)
-      .then((response) => response.json())
-      .then((users) => this.setState({ robots: users }))
-      .catch((err) => console.log(err));
+    this.props.onRequestRobots();
   }
 
   render() {
-    const { robots } = this.state;
     // эти поля из стейта нам приходят как пропсы
-    const { searchField, onSearchChange } = this.props;
+    const { searchField, onSearchChange, isPending, robots } = this.props;
 
     const filteredRobots = robots.filter((robot) => {
       return robot.name.toLowerCase().includes(searchField.toLowerCase());
     });
 
-    return !robots.length ? (
+    return isPending ? (
       <h1>Loading...</h1>
     ) : (
       <div className="App tc">
